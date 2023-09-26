@@ -11,7 +11,7 @@ export class VueFuse<T> {
   noResults: ComputedRef<boolean>
   runSearch: (search?: string | null) => void
   loadItems: (items: T[]) => void
-  constructor (list: MaybeReactiveList<T>, options?: Fuse.IFuseOptions<T>) {
+  constructor (list: MaybeReactiveList<T>, options?: Fuse.IFuseOptions<T>, idx?: Fuse.FuseIndex) {
     this.search = ref('')
     this.runSearch = (search?: string | null) => {
       if (!this.fuse) {
@@ -38,7 +38,7 @@ export class VueFuse<T> {
         this.loadItems(list.value ?? [])
       })
     }
-    this.fuse = ref(new Fuse(localArray, options))
+    this.fuse = ref(new Fuse(localArray, options, idx))
 
     this.resultsRaw = ref([])
 
@@ -55,6 +55,6 @@ export class VueFuse<T> {
   }
 }
 
-export function useVueFuse<T> (list: MaybeReactiveList<T>, options?: Fuse.IFuseOptions<T>): VueFuse<T> {
-  return new VueFuse(list, options)
+export function useVueFuse<T> (list: MaybeReactiveList<T>, options?: Fuse.IFuseOptions<T>, idx?: Fuse.FuseIndex): VueFuse<T> {
+  return new VueFuse(list, options, idx)
 }
